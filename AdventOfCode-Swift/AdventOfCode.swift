@@ -87,7 +87,7 @@ protocol Day {
 
 extension Day {
     static func solve(withTimeSpan: Bool = true) {
-        guard let input = try? Input.get("\(Self.self)") else {
+        guard let input = try? InputFile.getRawInput("\(Self.self)") else {
             print("Could not open input file Days/\(Self.self)/input.txt")
             return
         }
@@ -111,15 +111,33 @@ extension Day {
     }
 }
 
-enum Input {
+enum InputFile {
     static let projectUrl = URL(fileURLWithPath: #file).deletingLastPathComponent()
 
-    static func get(_ day: String) throws -> String {
+    static func getRawInput(_ day: String) throws -> String {
         let url = projectUrl.appendingPathComponent("Days/\(day)/input.txt")
         let inputData = try Data(contentsOf: url)
         guard let input = String(data: inputData, encoding: .utf8) else {
             throw NSError() as Error
         }
         return input
+    }
+}
+
+protocol InputType {
+    static func parse(rawValue: String) -> Self
+}
+
+extension String: InputType {
+    static func parse(rawValue: String) -> String {
+        return rawValue
+    }
+}
+
+extension Array where Element == Int {
+    static func parse(rawValue: String) -> [Int] {
+        return rawValue.components(separatedBy: CharacterSet.decimalDigits.inverted).compactMap {
+            return Int($0)
+        }
     }
 }

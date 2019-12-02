@@ -33,7 +33,6 @@
 		E98132CD23849EE00004E844 /* Day22.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98132CB23849EE00004E844 /* Day22.swift */; };
 		E98132D023849EE50004E844 /* Day21.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98132CE23849EE50004E844 /* Day21.swift */; };
 		E98132D323849EEB0004E844 /* Day20.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98132D223849EEB0004E844 /* Day20.swift */; };
-		E9C8E8EA2393C8A50035D57F /* Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9C8E8E92393C8A50035D57F /* Shared.swift */; };
 		E9F3CF2D23849691005B8B13 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F3CF2C23849691005B8B13 /* main.swift */; };
 /* End PBXBuildFile section */
 
@@ -103,7 +102,6 @@
 		E98132CF23849EE50004E844 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		E98132D123849EEA0004E844 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		E98132D223849EEB0004E844 /* Day20.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day20.swift; sourceTree = "<group>"; };
-		E9C8E8E92393C8A50035D57F /* Shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shared.swift; sourceTree = "<group>"; };
 		E9F3CF2923849691005B8B13 /* AdventOfCode-Swift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AdventOfCode-Swift"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9F3CF2C23849691005B8B13 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -376,14 +374,6 @@
 			path = Day19;
 			sourceTree = "<group>";
 		};
-		E9C8E8E82393C8970035D57F /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				E9C8E8E92393C8A50035D57F /* Shared.swift */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
 		E9F3CF2023849691005B8B13 = {
 			isa = PBXGroup;
 			children = (
@@ -405,7 +395,6 @@
 		E9F3CF2B23849691005B8B13 /* AdventOfCode-Swift */ = {
 			isa = PBXGroup;
 			children = (
-				E9C8E8E82393C8970035D57F /* Shared */,
 				E9813269238499B00004E844 /* Days */,
 				710D9373238541B90050BD59 /* AdventOfCode.swift */,
 				E9F3CF2C23849691005B8B13 /* main.swift */,
@@ -485,7 +474,6 @@
 				E98132AC23849E100004E844 /* Day12.swift in Sources */,
 				E98132AF23849E1B0004E844 /* Day13.swift in Sources */,
 				E98132B823849E590004E844 /* Day15.swift in Sources */,
-				E9C8E8EA2393C8A50035D57F /* Shared.swift in Sources */,
 				E98132B223849E2A0004E844 /* Day14.swift in Sources */,
 				E98132B523849E530004E844 /* Day16.swift in Sources */,
 				E98132C123849E820004E844 /* Day17.swift in Sources */,

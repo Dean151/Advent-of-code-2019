@@ -10,7 +10,7 @@ class Day01: Day {
         assert(fuelRequired(for: 1969) == 654)
         assert(fuelRequired(for: 100756) == 33583)
         
-        let masses = input.breakLines().compactMap { Int($0) }
+        let masses = [Int].parse(rawValue: input)
         let fuelRequirement = masses.reduce(0) {
             return $0 + fuelRequired(for: $1)
         }

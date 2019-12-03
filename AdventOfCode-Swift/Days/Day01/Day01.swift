@@ -1,7 +1,7 @@
 
 import Foundation
 
-class Day01: Day {
+struct Day01: Day {
     static func run(input: String) {
         
         // Part 1 requirements

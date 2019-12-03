@@ -60,24 +60,20 @@ struct Day03: Day {
                 }
             }
 
-            let positions: Set<Vector2D>
-            let steps: [Vector2D: Int]
+            let positions: [Vector2D: Int]
 
             init(definitions: [Definition]) {
-                var positions = Set<Vector2D>()
-                var steps = [Vector2D: Int]()
+                var positions = [Vector2D: Int](minimumCapacity: definitions.count)
                 var pos = Vector2D(x: 0, y: 0)
                 var step = 1
                 for definition in definitions {
                     for _ in 0..<definition.distance {
                         pos = definition.direction.follow(from: pos)
-                        positions.insert(pos)
-                        steps.updateValue(step, forKey: pos)
+                        positions.updateValue(step, forKey: pos)
                         step += 1
                     }
                 }
                 self.positions = positions
-                self.steps = steps
             }
         }
 
@@ -100,7 +96,7 @@ struct Day03: Day {
         }
 
         var intersections: Set<Vector2D> {
-            return firstWire.positions.intersection(secondWire.positions)
+            return Set(firstWire.positions.keys).intersection(secondWire.positions.keys)
         }
         
         var minIntersectDistance: Int {
@@ -108,7 +104,7 @@ struct Day03: Day {
         }
 
         var minIntersectDelay: Int {
-            return intersections.map({ firstWire.steps[$0]! + secondWire.steps[$0]! }).min() ?? 0
+            return intersections.map({ firstWire.positions[$0]! + secondWire.positions[$0]! }).min() ?? 0
         }
     }
 }

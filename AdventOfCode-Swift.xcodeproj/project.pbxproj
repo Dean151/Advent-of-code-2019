@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		710D9374238541B90050BD59 /* AdventOfCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9373238541B90050BD59 /* AdventOfCode.swift */; };
+		719A979723965C8F0010478B /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A979623965C8F0010478B /* Geometry.swift */; };
 		E981328B23849CBB0004E844 /* Day01.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328A23849CBA0004E844 /* Day01.swift */; };
 		E981328E23849CC40004E844 /* Day02.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328C23849CC40004E844 /* Day02.swift */; };
 		E981329123849CCB0004E844 /* Day03.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981329023849CCB0004E844 /* Day03.swift */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		710D9373238541B90050BD59 /* AdventOfCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventOfCode.swift; sourceTree = "<group>"; };
+		719A979623965C8F0010478B /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		71F4D8A0238FDAC500E27D74 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71F4D8A1238FDACB00E27D74 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E981328923849CBA0004E844 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
@@ -117,6 +119,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		719A979523965C7E0010478B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				719A979623965C8F0010478B /* Geometry.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		E9813269238499B00004E844 /* Days */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +405,7 @@
 		E9F3CF2B23849691005B8B13 /* AdventOfCode-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				719A979523965C7E0010478B /* Shared */,
 				E9813269238499B00004E844 /* Days */,
 				710D9373238541B90050BD59 /* AdventOfCode.swift */,
 				E9F3CF2C23849691005B8B13 /* main.swift */,
@@ -461,6 +472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E981328B23849CBB0004E844 /* Day01.swift in Sources */,
+				719A979723965C8F0010478B /* Geometry.swift in Sources */,
 				E981328E23849CC40004E844 /* Day02.swift in Sources */,
 				E981329123849CCB0004E844 /* Day03.swift in Sources */,
 				E981329423849DA60004E844 /* Day04.swift in Sources */,

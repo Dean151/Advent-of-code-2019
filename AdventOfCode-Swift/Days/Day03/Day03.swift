@@ -5,12 +5,19 @@ class Day03: Day {
     static func run(input: String) {
         
         // Part 1 requirements
-        assert(FrontPanel(input: "R8,U5,L5,D3\nU7,R6,D4,L4").minIntersectDistance() == 6)
-        assert(FrontPanel(input: "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83").minIntersectDistance() == 159)
-        assert(FrontPanel(input: "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7").minIntersectDistance() == 135)
+        assert(FrontPanel(input: "R8,U5,L5,D3\nU7,R6,D4,L4").minIntersectDistance == 6)
+        assert(FrontPanel(input: "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83").minIntersectDistance == 159)
+        assert(FrontPanel(input: "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7").minIntersectDistance == 135)
         
         let panel = FrontPanel(input: input)
-        print("Minimum distanced intersection for day 3-1 is \(panel.minIntersectDistance())")
+        print("Minimum distanced intersection for day 3-1 is \(panel.minIntersectDistance)")
+
+        // Part 2 requirements
+        assert(FrontPanel(input: "R8,U5,L5,D3\nU7,R6,D4,L4").minIntersectDelay == 30)
+        assert(FrontPanel(input: "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83").minIntersectDelay == 610)
+        assert(FrontPanel(input: "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7").minIntersectDelay == 410)
+
+        print("Minimum delayed intersection for day 3-2 is \(panel.minIntersectDelay)")
     }
 
     struct FrontPanel {
@@ -54,17 +61,23 @@ class Day03: Day {
             }
 
             let positions: Set<Vector2D>
+            let steps: [Vector2D: Int]
 
             init(definitions: [Definition]) {
                 var positions = Set<Vector2D>()
+                var steps = [Vector2D: Int]()
                 var pos = Vector2D(x: 0, y: 0)
+                var step = 1
                 for definition in definitions {
                     for _ in 0..<definition.distance {
                         pos = definition.direction.follow(from: pos)
                         positions.insert(pos)
+                        steps.updateValue(step, forKey: pos)
+                        step += 1
                     }
                 }
                 self.positions = positions
+                self.steps = steps
             }
         }
 
@@ -85,9 +98,17 @@ class Day03: Day {
             firstWire = Wire(definitions: wiresDef[0])
             secondWire = Wire(definitions: wiresDef[1])
         }
+
+        var intersections: Set<Vector2D> {
+            return firstWire.positions.intersection(secondWire.positions)
+        }
         
-        func minIntersectDistance() -> Int {
-            return firstWire.positions.intersection(secondWire.positions).map({ $0.manatthanDistance }).min() ?? 0
+        var minIntersectDistance: Int {
+            return intersections.map({ $0.manatthanDistance }).min() ?? 0
+        }
+
+        var minIntersectDelay: Int {
+            return intersections.map({ firstWire.steps[$0]! + secondWire.steps[$0]! }).min() ?? 0
         }
     }
 }

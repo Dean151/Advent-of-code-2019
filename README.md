@@ -4,19 +4,21 @@
 Wanna give Advent Of Code using Swift a go? Try my [Project Template](https://github.com/Dean151/Advent-of-code-Swift-Starter)
 
 ## My goal
-Trying to solve each puzzle each day. I hope I'll have enough time and motivation to do so.
+Trying to solve each puzzle each day. 
+I hope I'll have enough time and motivation to do so.
 
 ## My own rules
 
-The puzzles will be solved in Swift.
+All the puzzles will be solved using Swift.
 
-No cheating. Many other person do the puzzle. I'll have to come up with my own solution ... or skipping a day.
+No cheating. Many other persons do the puzzle each day. 
+I'll have to come up with my own solution ... or skipping a day.
 
-Some code may be reused from one day to another.
+Some code may (and will!) be shared across days.
 
-Not all special cases will be treated by the code.
+Not all special cases will always be treated by the code, so it may not work for any input.
 
-Some attention will be ported to performance consideration, let try to make that less than 5 seconds per day!
+Some special attention will be addressed regarding performances, I'll try to solve each day in less than 5 computing seconds!
 
 ## Puzzle solutions so far
 
@@ -28,4 +30,4 @@ Some attention will be ported to performance consideration, let try to make that
 | **4**  | 0,368s          | 1767     |  1192      |
 | **5**  | TBA             |          |            |
 
-\* : Best elapsed time of the complete solution for my MacBook Pro 13in mid 2013 in "Release" mode
+\* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

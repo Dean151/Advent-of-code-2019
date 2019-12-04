@@ -23,13 +23,11 @@ struct Day04: Day {
         assert(Password(number: 123444).isMatchingCriteria(haveExactDoublon: true) == false)
         assert(Password(number: 111122).isMatchingCriteria(haveExactDoublon: true) == true)
         
-        // My added assertion(s) for part two
+        // My added assertions for debugging part two
         assert(Password(number: 568888).isMatchingCriteria(haveExactDoublon: true) == false)
         assert(Password(number: 588889).isMatchingCriteria(haveExactDoublon: true) == false)
         assert(Password(number: 588999).isMatchingCriteria(haveExactDoublon: true) == true)
         
-        // 1210 too high
-        // 1004 too low
         let resultWithNoTriple = Password.numberMatching(within: range, haveExactDoublon: true)
         print("Number of matching password for day 4-2 is \(resultWithNoTriple)")
     }

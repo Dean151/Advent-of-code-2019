@@ -10,7 +10,13 @@ import Foundation
 
 struct IntCodeComputer {
 
-    static var pendingInput: [Int] = []
+    let instructions: [Int]
+    let inputs: [Int]
+
+    init(instructions: [Int], inputs: [Int] = []) {
+        self.instructions = instructions
+        self.inputs = inputs
+    }
 
     enum Operation {
         case add(pointerA: Bool, pointerB: Bool)
@@ -19,84 +25,73 @@ struct IntCodeComputer {
         case output(pointerA: Bool)
         case exit
 
-        static func from(opcode: Int) -> Operation? {
-            switch opcode {
+        static func from(opcode: Int) -> Operation {
+            let pointerA = (opcode / 100) % 2 == 0
+            let pointerB = (opcode / 1000) % 2 == 0
+            switch opcode % 100 {
             case 1:
-                return .add(pointerA: true, pointerB: true)
+                return .add(pointerA: pointerA, pointerB: pointerB)
             case 2:
-                return .multiply(pointerA: true, pointerB: true)
+                return .multiply(pointerA: pointerA, pointerB: pointerB)
             case 3:
                 return .input
             case 4:
-                return .output(pointerA: true)
+                return .output(pointerA: pointerA)
             case 99:
                 return .exit
-            case 101:
-                return .add(pointerA: false, pointerB: true)
-            case 102:
-                return .multiply(pointerA: false, pointerB: true)
-            case 104:
-                return .output(pointerA: false)
-            case 1001:
-                return .add(pointerA: true, pointerB: false)
-            case 1002:
-                return .multiply(pointerA: true, pointerB: false)
-            case 1101:
-                return .add(pointerA: false, pointerB: false)
-            case 1102:
-                return .multiply(pointerA: false, pointerB: false)
             default:
+                fatalError("Unknown operation found: \(opcode)")
+            }
+        }
+
+        var increment: Int? {
+            switch self {
+            case .add, .multiply:
+                return 4
+            case .input, .output:
+                return 2
+            case .exit:
                 return nil
             }
         }
 
-        func perform(instructions: inout [Int], current: Int) -> Int {
+        func perform(instructions: inout [Int], current: Int, inputs: inout [Int], output: inout [Int]) {
             switch self {
             case .add(pointerA: let pointerA, pointerB: let pointerB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
                 instructions[instructions[current + 3]] = (pointerA ? instructions[a] : a) + (pointerB ? instructions[b] : b)
-                return 4
             case .multiply(pointerA: let pointerA, pointerB: let pointerB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
                 instructions[instructions[current + 3]] = (pointerA ? instructions[a] : a) * (pointerB ? instructions[b] : b)
-                return 4
             case .input:
-                var input = IntCodeComputer.pendingInput.popLast()
-                while input == nil {
-                    print("USER INPUT EXPECTED:")
-                    input = Int(readLine() ?? "")
+                guard !inputs.isEmpty else {
+                    fatalError("Missing user input")
                 }
-                instructions[instructions[current + 1]] = input!
-                return 2
+                instructions[instructions[current + 1]] = inputs.removeFirst()
             case .output(pointerA: let pointerA):
                 let a = instructions[current + 1]
-                let output = pointerA ? instructions[a] : a
-                print("OUTPUT: \(output)")
-                return 2
+                output.append(pointerA ? instructions[a] : a)
             case .exit:
-                return 0
+                fatalError("Calling 'perform' on exit opcode")
             }
         }
     }
 
-    static func run(with instructions: [Int], firstInput: Int? = nil) -> [Int] {
-        if let input = firstInput {
-            IntCodeComputer.pendingInput.append(input)
-        }
-        var instructions = instructions
+    func run() -> (instructions: [Int], output: [Int]) {
+        var instructions = self.instructions
+        var inputs = self.inputs
+        var output: [Int] = []
         var current = 0
         while true {
-            guard let operation = Operation.from(opcode: instructions[current]) else {
-                fatalError("Unknown operation found: \(instructions[current])")
-            }
-            let increment = operation.perform(instructions: &instructions, current: current)
-            if increment == 0 {
+            let operation = Operation.from(opcode: instructions[current])
+            guard let increment = operation.increment else {
                 break
             }
+            operation.perform(instructions: &instructions, current: current, inputs: &inputs, output: &output)
             current += increment
         }
-        return instructions
+        return (instructions, output)
     }
 }

@@ -21,7 +21,15 @@ struct Day05: Day {
         var output = IntCodeComputer(instructions: instructions, inputs: [1]).run().output
         let result = output.removeLast()
         assert(output.reduce(true, { $0 && $1 == 0 })) // All values should be 0 after removing diagnostic code
-        print("Day 5-1 diagnostic code is \(result)")
+        print("Day 5-1 cooling diagnostic code is \(result)")
+
+        // Part 2 requirements
+        // TODO!
+
+        output = IntCodeComputer(instructions: instructions, inputs: [5]).run().output
+        let result2 = output.removeLast()
+        assert(output.reduce(true, { $0 && $1 == 0 })) // All values should be 0 after removing diagnostic code
+        print("Day 5-2 thermal diagnostic code is \(result2)")
     }
 }
 

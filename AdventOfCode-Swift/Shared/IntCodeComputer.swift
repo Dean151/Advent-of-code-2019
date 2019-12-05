@@ -44,38 +44,31 @@ struct IntCodeComputer {
             }
         }
 
-        var increment: Int? {
-            switch self {
-            case .add, .multiply:
-                return 4
-            case .input, .output:
-                return 2
-            case .exit:
-                return nil
-            }
-        }
-
-        func perform(instructions: inout [Int], current: Int, inputs: inout [Int], output: inout [Int]) {
+        func perform(instructions: inout [Int], current: inout Int, inputs: inout [Int], output: inout [Int]) {
             switch self {
             case .add(immediateA: let immediateA, immediateB: let immediateB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
                 let c = instructions[current + 3]
                 instructions[c] = (immediateA ? a : instructions[a]) + (immediateB ? b : instructions[b])
+                current += 4
             case .multiply(immediateA: let immediateA, immediateB: let immediateB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
                 let c = instructions[current + 3]
                 instructions[c] = (immediateA ? a : instructions[a]) * (immediateB ? b : instructions[b])
+                current += 4
             case .input:
                 guard !inputs.isEmpty else {
                     fatalError("Missing user input")
                 }
                 let a = instructions[current + 1]
                 instructions[a] = inputs.removeFirst()
+                current += 2
             case .output(immediateA: let immediateA):
                 let a = instructions[current + 1]
                 output.append(immediateA ? a : instructions[a])
+                current += 2
             case .exit:
                 fatalError("Calling 'perform' on exit opcode")
             }
@@ -89,11 +82,10 @@ struct IntCodeComputer {
         var current = 0
         while true {
             let operation = Operation.from(opcode: instructions[current])
-            guard let increment = operation.increment else {
+            if case Operation.exit = operation {
                 break
             }
-            operation.perform(instructions: &instructions, current: current, inputs: &inputs, output: &output)
-            current += increment
+            operation.perform(instructions: &instructions, current: &current, inputs: &inputs, output: &output)
         }
         return (instructions, output)
     }

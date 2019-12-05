@@ -86,7 +86,15 @@ protocol Day {
 }
 
 extension Day {
-    static func solve(withTimeSpan: Bool = true) {
+    static func solve() {
+        #if !DEBUG
+            solve(withTimeSpan: true)
+        #else
+            solve(withTimeSpan: false)
+        #endif
+    }
+
+    static func solve(withTimeSpan: Bool) {
         guard let input = try? InputFile.getRawInput("\(Self.self)") else {
             print("Could not open input file Days/\(Self.self)/input.txt")
             return

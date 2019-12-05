@@ -73,7 +73,8 @@ struct IntCodeComputer {
                 return 2
             case .output(pointerA: let pointerA):
                 let a = instructions[current + 1]
-                print("OUTPUT: \(pointerA ? instructions[a] : a)")
+                let output = pointerA ? instructions[a] : a
+                print("OUTPUT: \(output)")
                 return 2
             case .exit:
                 return 0

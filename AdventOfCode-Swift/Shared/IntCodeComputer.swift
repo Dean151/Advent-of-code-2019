@@ -23,6 +23,10 @@ struct IntCodeComputer {
         case multiply(immediateA: Bool, immediateB: Bool)
         case input
         case output(immediateA: Bool)
+        case jumpIfTrue(immediateA: Bool, immediateB: Bool)
+        case jumpIfFalse(immediateA: Bool, immediateB: Bool)
+        case lessThan(immediateA: Bool, immediateB: Bool)
+        case equals(immediateA: Bool, immediateB: Bool)
         case exit
 
         static func from(opcode: Int) -> Operation {
@@ -37,6 +41,14 @@ struct IntCodeComputer {
                 return .input
             case 4:
                 return .output(immediateA: immediateA)
+            case 5:
+                return jumpIfTrue(immediateA: immediateA, immediateB: immediateB)
+            case 6:
+                return jumpIfFalse(immediateA: immediateA, immediateB: immediateB)
+            case 7:
+                return lessThan(immediateA: immediateA, immediateB: immediateB)
+            case 8:
+                return equals(immediateA: immediateA, immediateB: immediateB)
             case 99:
                 return .exit
             default:
@@ -69,6 +81,36 @@ struct IntCodeComputer {
                 let a = instructions[current + 1]
                 output.append(immediateA ? a : instructions[a])
                 current += 2
+            case .jumpIfTrue(immediateA: let immediateA, immediateB: let immediateB):
+                let a = instructions[current + 1]
+                let b = instructions[current + 2]
+                if (immediateA ? a : instructions[a]) != 0 {
+                    current = immediateB ? b : instructions[b]
+                }
+                else {
+                    current += 3
+                }
+            case .jumpIfFalse(immediateA: let immediateA, immediateB: let immediateB):
+                let a = instructions[current + 1]
+                let b = instructions[current + 2]
+                if (immediateA ? a : instructions[a]) == 0 {
+                    current = immediateB ? b : instructions[b]
+                }
+                else {
+                    current += 3
+                }
+            case .lessThan(immediateA: let immediateA, immediateB: let immediateB):
+                let a = instructions[current + 1]
+                let b = instructions[current + 2]
+                let c = instructions[current + 3]
+                instructions[c] = (immediateA ? a : instructions[a]) < (immediateB ? b : instructions[b]) ? 1 : 0
+                current += 4
+            case .equals(immediateA: let immediateA, immediateB: let immediateB):
+                let a = instructions[current + 1]
+                let b = instructions[current + 2]
+                let c = instructions[current + 3]
+                instructions[c] = (immediateA ? a : instructions[a]) == (immediateB ? b : instructions[b]) ? 1 : 0
+                current += 4
             case .exit:
                 fatalError("Calling 'perform' on exit opcode")
             }

@@ -27,7 +27,8 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **1**  | 0,001s          | 3334282  | 4998585    |
 | **2**  | 0,006s          | 4576384  | 5398       |
 | **3**  | 0,092s          | 709      | 13836      |
-| **4**  | 0,368s          | 1767     |  1192      |
-| **5**  | TBA             |          |            |
+| **4**  | 0,368s          | 1767     | 1192       |
+| **5**  | 0,001s          | 6761139  | 9217546    |
+| **6**  | TBA             |          |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

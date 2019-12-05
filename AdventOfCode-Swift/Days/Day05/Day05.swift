@@ -19,8 +19,8 @@ struct Day05: Day {
 
         let instructions = [Int].parse(rawValue: input)
         var output = IntCodeComputer(instructions: instructions, inputs: [1]).run().output
-        assert(output.reduce(true, { $0 && $1 == 0 })) // All values should be 0
         let result = output.removeLast()
+        assert(output.reduce(true, { $0 && $1 == 0 })) // All values should be 0 after removing diagnostic code
         print("Day 5-1 diagnostic code is \(result)")
     }
 }

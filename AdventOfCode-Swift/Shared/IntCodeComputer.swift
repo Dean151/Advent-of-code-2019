@@ -19,24 +19,24 @@ struct IntCodeComputer {
     }
 
     enum Operation {
-        case add(pointerA: Bool, pointerB: Bool)
-        case multiply(pointerA: Bool, pointerB: Bool)
+        case add(immediateA: Bool, immediateB: Bool)
+        case multiply(immediateA: Bool, immediateB: Bool)
         case input
-        case output(pointerA: Bool)
+        case output(immediateA: Bool)
         case exit
 
         static func from(opcode: Int) -> Operation {
-            let pointerA = (opcode / 100) % 2 == 0
-            let pointerB = (opcode / 1000) % 2 == 0
+            let immediateA = (opcode / 100) % 2 == 1
+            let immediateB = (opcode / 1000) % 2 == 1
             switch opcode % 100 {
             case 1:
-                return .add(pointerA: pointerA, pointerB: pointerB)
+                return .add(immediateA: immediateA, immediateB: immediateB)
             case 2:
-                return .multiply(pointerA: pointerA, pointerB: pointerB)
+                return .multiply(immediateA: immediateA, immediateB: immediateB)
             case 3:
                 return .input
             case 4:
-                return .output(pointerA: pointerA)
+                return .output(immediateA: immediateA)
             case 99:
                 return .exit
             default:
@@ -57,22 +57,25 @@ struct IntCodeComputer {
 
         func perform(instructions: inout [Int], current: Int, inputs: inout [Int], output: inout [Int]) {
             switch self {
-            case .add(pointerA: let pointerA, pointerB: let pointerB):
+            case .add(immediateA: let immediateA, immediateB: let immediateB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
-                instructions[instructions[current + 3]] = (pointerA ? instructions[a] : a) + (pointerB ? instructions[b] : b)
-            case .multiply(pointerA: let pointerA, pointerB: let pointerB):
+                let c = instructions[current + 3]
+                instructions[c] = (immediateA ? a : instructions[a]) + (immediateB ? b : instructions[b])
+            case .multiply(immediateA: let immediateA, immediateB: let immediateB):
                 let a = instructions[current + 1]
                 let b = instructions[current + 2]
-                instructions[instructions[current + 3]] = (pointerA ? instructions[a] : a) * (pointerB ? instructions[b] : b)
+                let c = instructions[current + 3]
+                instructions[c] = (immediateA ? a : instructions[a]) * (immediateB ? b : instructions[b])
             case .input:
                 guard !inputs.isEmpty else {
                     fatalError("Missing user input")
                 }
-                instructions[instructions[current + 1]] = inputs.removeFirst()
-            case .output(pointerA: let pointerA):
                 let a = instructions[current + 1]
-                output.append(pointerA ? instructions[a] : a)
+                instructions[a] = inputs.removeFirst()
+            case .output(immediateA: let immediateA):
+                let a = instructions[current + 1]
+                output.append(immediateA ? a : instructions[a])
             case .exit:
                 fatalError("Calling 'perform' on exit opcode")
             }

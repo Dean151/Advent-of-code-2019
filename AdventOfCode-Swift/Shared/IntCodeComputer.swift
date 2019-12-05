@@ -63,13 +63,12 @@ struct IntCodeComputer {
                 instructions[instructions[current + 3]] = (pointerA ? instructions[a] : a) * (pointerB ? instructions[b] : b)
                 return 4
             case .input:
-                let a = instructions[current + 1]
                 var input = IntCodeComputer.pendingInput.popLast()
                 while input == nil {
                     print("USER INPUT EXPECTED:")
                     input = Int(readLine() ?? "")
                 }
-                instructions[a] = input!
+                instructions[instructions[current + 1]] = input!
                 return 2
             case .output(pointerA: let pointerA):
                 let a = instructions[current + 1]

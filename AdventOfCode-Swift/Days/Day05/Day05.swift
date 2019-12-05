@@ -24,3 +24,4 @@ struct Day05: Day {
 }
 
 // Too high: 668351603
+// Too low: 212

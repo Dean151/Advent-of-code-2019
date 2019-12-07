@@ -30,6 +30,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **4**  | 0,368s          | 1767     | 1192       |
 | **5**  | 0,001s          | 6761139  | 9217546    |
 | **6**  | 0,055s          | 278744   |  475       |
-| **7**  | TBA             |          |            |
+| **7**  | TBA             | 99376    |            |
+| **8**  | TBA             |          |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

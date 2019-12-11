@@ -1,6 +1,7 @@
 
 import Foundation
 
+/// Depends on IntCodeComputer (ie day 2)
 struct Day05: Day {
     static func run(input: String) {
 

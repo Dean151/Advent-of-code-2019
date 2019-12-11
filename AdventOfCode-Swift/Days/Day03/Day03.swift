@@ -64,7 +64,7 @@ struct Day03: Day {
 
             init(definitions: [Definition]) {
                 var positions = [Vector2D: Int](minimumCapacity: definitions.count)
-                var pos = Vector2D(x: 0, y: 0)
+                var pos = Vector2D.zero
                 var step = 1
                 for definition in definitions {
                     for _ in 0..<definition.distance {

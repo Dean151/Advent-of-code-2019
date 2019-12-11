@@ -33,5 +33,8 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **7**  | TBA             | 99376    |            |
 | **8**  | 0,003s          | 2375     | RKHRY      |
 | **9**  | TBA             |          |            |
+| **10** | 0,09s           | 253      | 815        |
+| **11** | TBA             |          |            |
+| **12** | TBA             |          |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

@@ -38,12 +38,22 @@ struct Day07: Day {
 
     static func outputSignal(input: String, phaseSettings: [Int], feedbackMode: Bool = false) -> Int {
         let instructions = [Int].parse(rawValue: input)
-        var input = 0
-        for phase in phaseSettings {
-            let computer = IntCodeComputer(instructions: instructions, inputs: [phase, input])
-            input = computer.run().output.first!
+        var computers = phaseSettings.map { IntCodeComputer(instructions: instructions, inputs: [$0]) }
+        var current = 0, output = 0
+        while true {
+            computers[current].inputs.append(output)
+            computers[current].run()
+            if !computers[current].outputs.isEmpty {
+                output = computers[current].outputs.removeFirst()
+            } else {
+                fatalError("Seems impossible")
+            }
+            if current == computers.count - 1 && (!feedbackMode || !computers[0].waitingForInput) {
+                break
+            }
+            current = (current + 1) % 5
         }
-        return input
+        return output
     }
 }
 

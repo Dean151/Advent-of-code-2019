@@ -9,12 +9,23 @@
 import Foundation
 
 struct IntCodeComputer {
+    var memory: [Int: Int]
+    var inputs: [Int] {
+        didSet {
+            waitingForInput = false
+        }
+    }
 
-    let instructions: [Int]
-    let inputs: [Int]
+    var current: Int = 0
+    var outputs: [Int] = []
+    var waitingForInput = false
 
     init(instructions: [Int], inputs: [Int] = []) {
-        self.instructions = instructions
+        var memory: [Int: Int] = [:]
+        for (offset, instruction) in instructions.enumerated() {
+            memory[Int(offset)] = instruction
+        }
+        self.memory = memory
         self.inputs = inputs
     }
 
@@ -56,79 +67,100 @@ struct IntCodeComputer {
             }
         }
 
-        func perform(instructions: inout [Int], current: inout Int, inputs: inout [Int], output: inout [Int]) {
+        var numberOfParameters: Int {
+            switch self {
+            case .add, .multiply, .lessThan, .equals:
+                return 3
+            case .jumpIfTrue, .jumpIfFalse:
+                return 2
+            case .input, .output:
+                return 1
+            case .exit:
+                fatalError("Calling 'numberOfParameters' on exit opcode")
+            }
+        }
+
+        func perform(on computer: inout IntCodeComputer, with parameters: [Int]) {
             switch self {
             case .add(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                let c = instructions[current + 3]
-                instructions[c] = (immediateA ? a : instructions[a]) + (immediateB ? b : instructions[b])
-                current += 4
+                let a = parameters[0], b = parameters[1], c = parameters[2]
+                computer.memory[c] = (immediateA ? a : computer.memory[a]!) + (immediateB ? b : computer.memory[b]!)
+                computer.current += 4
             case .multiply(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                let c = instructions[current + 3]
-                instructions[c] = (immediateA ? a : instructions[a]) * (immediateB ? b : instructions[b])
-                current += 4
+                let a = parameters[0], b = parameters[1], c = parameters[2]
+                computer.memory[c] = (immediateA ? a : computer.memory[a]!) * (immediateB ? b : computer.memory[b]!)
+                computer.current += 4
             case .input:
-                guard !inputs.isEmpty else {
-                    fatalError("Missing user input")
+                guard !computer.inputs.isEmpty else {
+                    computer.waitingForInput = true
+                    return
                 }
-                let a = instructions[current + 1]
-                instructions[a] = inputs.removeFirst()
-                current += 2
+                let a = parameters[0]
+                computer.memory[a] = computer.inputs.removeFirst()
+                computer.current += 2
             case .output(immediateA: let immediateA):
-                let a = instructions[current + 1]
-                output.append(immediateA ? a : instructions[a])
-                current += 2
+                let a = parameters[0]
+                computer.outputs.append(immediateA ? a : computer.memory[a]!)
+                computer.current += 2
             case .jumpIfTrue(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                if (immediateA ? a : instructions[a]) != 0 {
-                    current = immediateB ? b : instructions[b]
+                let a = parameters[0], b = parameters[1]
+                if (immediateA ? a : computer.memory[a]!) != 0 {
+                    computer.current = immediateB ? b : computer.memory[b]!
                 }
                 else {
-                    current += 3
+                    computer.current += 3
                 }
             case .jumpIfFalse(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                if (immediateA ? a : instructions[a]) == 0 {
-                    current = immediateB ? b : instructions[b]
+                let a = parameters[0], b = parameters[1]
+                if (immediateA ? a : computer.memory[a]) == 0 {
+                    computer.current = immediateB ? b : computer.memory[b]!
                 }
                 else {
-                    current += 3
+                    computer.current += 3
                 }
             case .lessThan(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                let c = instructions[current + 3]
-                instructions[c] = (immediateA ? a : instructions[a]) < (immediateB ? b : instructions[b]) ? 1 : 0
-                current += 4
+                let a = parameters[0], b = parameters[1], c = parameters[2]
+                computer.memory[c] = (immediateA ? a : computer.memory[a]!) < (immediateB ? b : computer.memory[b]!) ? 1 : 0
+                computer.current += 4
             case .equals(immediateA: let immediateA, immediateB: let immediateB):
-                let a = instructions[current + 1]
-                let b = instructions[current + 2]
-                let c = instructions[current + 3]
-                instructions[c] = (immediateA ? a : instructions[a]) == (immediateB ? b : instructions[b]) ? 1 : 0
-                current += 4
+                let a = parameters[0], b = parameters[1], c = parameters[2]
+                computer.memory[c] = (immediateA ? a : computer.memory[a]!) == (immediateB ? b : computer.memory[b]!) ? 1 : 0
+                computer.current += 4
             case .exit:
                 fatalError("Calling 'perform' on exit opcode")
             }
         }
     }
 
-    func run() -> (instructions: [Int], output: [Int]) {
-        var instructions = self.instructions
-        var inputs = self.inputs
-        var output: [Int] = []
-        var current = 0
+    mutating func run() {
         while true {
-            let operation = Operation.from(opcode: instructions[current])
+            let operation = Operation.from(opcode: memory[current]!)
             if case Operation.exit = operation {
                 break
             }
-            operation.perform(instructions: &instructions, current: &current, inputs: &inputs, output: &output)
+            var parameters: [Int] = []
+            for index in 1...operation.numberOfParameters {
+                parameters.append(memory[current + index]!)
+            }
+            operation.perform(on: &self, with: parameters)
+            if waitingForInput {
+                break
+            }
         }
-        return (instructions, output)
+    }
+
+    func runned() -> IntCodeComputer {
+        var computer = self
+        computer.run()
+        return computer
+    }
+
+    var finalState: (memory: [Int], output: [Int]) {
+        let max = memory.keys.max() ?? 0
+        var memory = [Int](repeating: 0, count: max+1)
+        for (offset, value) in self.memory {
+            memory[offset] = value
+        }
+        return (memory, outputs)
     }
 }

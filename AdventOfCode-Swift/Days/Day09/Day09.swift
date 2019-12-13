@@ -11,7 +11,10 @@ struct Day09: Day {
 
         let instructions = [Int].parse(rawValue: input)
         var computer = IntCodeComputer(instructions: instructions, inputs: [1])
+        print("BOOST code for Day 9-1 is \(computer.runned().outputs.last!)")
+
+        computer.inputs = [2]
         computer.run()
-        print("BOOST code for Day 9-1 is \(computer.outputs.last!)")
+        print("BOOST code for Day 9-2 is \(computer.outputs.last!)")
     }
 }

@@ -23,40 +23,32 @@ struct Day03: Day {
     struct FrontPanel {
         struct Wire {
             struct Definition {
-                let direction: Direction
+                let direction: Vector2D.Direction
                 let distance: Int
 
                 init?(rawValue: String) {
-                    guard let dir = rawValue.first.flatMap({ String($0) }), let direction = Direction(rawValue: dir) else {
+                    guard let dir = rawValue.first.flatMap({ String($0) }) else {
                         return nil
                     }
+                    switch dir {
+                    case "U":
+                        self.direction = .up
+                    case "L":
+                        self.direction = .left
+                    case "R":
+                        self.direction = .right
+                    case "D":
+                        self.direction = .down
+                    default:
+                        fatalError("Unknown direction provided")
+                    }
+
                     var dist = rawValue
                     dist.removeFirst()
                     guard let distance = Int(dist) else {
                         return nil
                     }
-                    self.direction = direction
                     self.distance = distance
-                }
-            }
-
-            enum Direction: String {
-                case up = "U"
-                case left = "L"
-                case right = "R"
-                case down = "D"
-
-                func follow(from pos: Vector2D) -> Vector2D {
-                    switch self {
-                    case .up:
-                        return Vector2D(x: pos.x, y: pos.y - 1)
-                    case .left:
-                        return Vector2D(x: pos.x - 1, y: pos.y)
-                    case .right:
-                        return Vector2D(x: pos.x + 1, y: pos.y)
-                    case .down:
-                        return Vector2D(x: pos.x, y: pos.y + 1)
-                    }
                 }
             }
 
@@ -68,7 +60,7 @@ struct Day03: Day {
                 var step = 1
                 for definition in definitions {
                     for _ in 0..<definition.distance {
-                        pos = definition.direction.follow(from: pos)
+                        pos.move(definition.direction)
                         positions.updateValue(step, forKey: pos)
                         step += 1
                     }

@@ -175,9 +175,6 @@ struct IntCodeComputer {
     }
 
     mutating func run() {
-        if finished {
-            return
-        }
         pending = false
         while true {
             let operation = Operation.from(opcode: memory[current]!)

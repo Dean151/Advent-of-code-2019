@@ -34,3 +34,44 @@ extension Vector2D: CustomStringConvertible {
         return "(\(x),\(y))"
     }
 }
+
+extension Vector2D {
+    enum Turn {
+        case left, right
+    }
+    enum Direction {
+        case up, left, right, down
+
+        func turned(_ turn: Turn) -> Direction {
+            switch self {
+            case .up:
+                return turn == .left ? .left : .right
+            case .left:
+                return turn == .left ? .down : .up
+            case .down:
+                return turn == .left ? .right : .left
+            case .right:
+                return turn == .left ? .up : .down
+            }
+        }
+        mutating func turn(_ turn: Turn) {
+            self = self.turned(turn)
+        }
+    }
+    
+    func moved(_ direction: Direction) -> Vector2D {
+        switch direction {
+        case .up:
+            return Vector2D(x: x, y: y - 1)
+        case .left:
+            return Vector2D(x: x - 1, y: y)
+        case .right:
+            return Vector2D(x: x + 1, y: y)
+        case .down:
+            return Vector2D(x: x, y: y + 1)
+        }
+    }
+    mutating func move(_ direction: Direction) {
+        self = self.moved(direction)
+    }
+}

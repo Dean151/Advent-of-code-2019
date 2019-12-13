@@ -57,7 +57,7 @@ struct Day08: Day {
 
         func print() {
             for (index, pixel) in decode.enumerated() {
-                Swift.print(pixel == 1 ? "X" : " ", separator: "", terminator: "")
+                Swift.print(pixel == 1 ? "X" : " ", terminator: "")
                 if index % width == width - 1 {
                     Swift.print("") // Will go to the line
                 }

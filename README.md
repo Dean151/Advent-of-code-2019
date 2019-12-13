@@ -34,7 +34,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **8**  | 0,003s          | 2375       | RKHRY      |
 | **9**  | 0,215s          | 2436480432 | 45710      |
 | **10** | 0,09s           | 253        | 815        |
-| **11** | TBA             |            |            |
+| **11** | 0,069s          | 1863       | BLULZJLZ   |
 | **12** | TBA             |            |            |
 | **13** | TBA             |            |            |
 

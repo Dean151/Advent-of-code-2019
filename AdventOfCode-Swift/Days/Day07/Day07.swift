@@ -28,7 +28,7 @@ struct Day07: Day {
     static func largestOutputSignal(input: String, feedbackMode: Bool = false) -> Int {
         var max = Int.min
         heapPermutation(feedbackMode ? [5,6,7,8,9] : [0,1,2,3,4]) { phases in
-            let result = outputSignal(input: input, phaseSettings: phases, feedbackMode: true)
+            let result = outputSignal(input: input, phaseSettings: phases)
             if result > max {
                 max = result
             }
@@ -36,20 +36,17 @@ struct Day07: Day {
         return max
     }
 
-    static func outputSignal(input: String, phaseSettings: [Int], feedbackMode: Bool = false) -> Int {
+    static func outputSignal(input: String, phaseSettings: [Int]) -> Int {
         let instructions = [Int].parse(rawValue: input)
         var computers = phaseSettings.map { IntCodeComputer(instructions: instructions, inputs: [$0]) }
         var current = 0, output = 0
-        while true {
+        while !computers.reduce(true, { $0 && $1.finished }) {
             computers[current].inputs.append(output)
             computers[current].run()
             if !computers[current].outputs.isEmpty {
                 output = computers[current].outputs.removeFirst()
             } else {
                 fatalError("Seems impossible")
-            }
-            if current == computers.count - 1 && (!feedbackMode || !computers[0].waitingForInput) {
-                break
             }
             current = (current + 1) % 5
         }

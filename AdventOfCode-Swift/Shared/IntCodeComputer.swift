@@ -10,15 +10,13 @@ import Foundation
 
 struct IntCodeComputer {
     var memory: [Int: Int]
-    var inputs: [Int] {
-        didSet {
-            waitingForInput = false
-        }
-    }
+    var inputs: [Int]
 
     var current: Int = 0
     var outputs: [Int] = []
-    var waitingForInput = false
+
+    var pending = false
+    var finished = false
 
     init(instructions: [Int], inputs: [Int] = []) {
         var memory: [Int: Int] = [:]
@@ -92,7 +90,7 @@ struct IntCodeComputer {
                 computer.current += 4
             case .input:
                 guard !computer.inputs.isEmpty else {
-                    computer.waitingForInput = true
+                    computer.pending = true
                     return
                 }
                 let a = parameters[0]
@@ -133,9 +131,14 @@ struct IntCodeComputer {
     }
 
     mutating func run() {
+        if finished {
+            return
+        }
+        pending = false
         while true {
             let operation = Operation.from(opcode: memory[current]!)
             if case Operation.exit = operation {
+                finished = true
                 break
             }
             var parameters: [Int] = []
@@ -143,7 +146,7 @@ struct IntCodeComputer {
                 parameters.append(memory[current + index]!)
             }
             operation.perform(on: &self, with: parameters)
-            if waitingForInput {
+            if pending {
                 break
             }
         }

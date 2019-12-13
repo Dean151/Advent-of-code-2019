@@ -30,7 +30,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **4**  | 0,368s          | 1767     | 1192       |
 | **5**  | 0,002s          | 6761139  | 9217546    |
 | **6**  | 0,055s          | 278744   |  475       |
-| **7**  | TBA             | 99376    |            |
+| **7**  | 0,111s          | 99376    | 8754464    |
 | **8**  | 0,003s          | 2375     | RKHRY      |
 | **9**  | TBA             |          |            |
 | **10** | 0,09s           | 253      | 815        |

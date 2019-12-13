@@ -9,7 +9,9 @@ struct Day09: Day {
         assert(IntCodeComputer(instructions: [1102,34915192,34915192,7,4,7,99,0]).runned().outputs.first.flatMap({ "\($0)" })?.count == 16)
         assert(IntCodeComputer(instructions: [104,1125899906842624,99]).runned().outputs == [1125899906842624])
 
-        // TODO: Implement Day 9
-        print("Day 9 is not yet implemented")
+        let instructions = [Int].parse(rawValue: input)
+        var computer = IntCodeComputer(instructions: instructions, inputs: [1])
+        computer.run()
+        print("BOOST code for Day 9-1 is \(computer.outputs.last!)")
     }
 }

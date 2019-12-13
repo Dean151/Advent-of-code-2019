@@ -13,6 +13,7 @@ struct IntCodeComputer {
     var inputs: [Int]
 
     var current: Int = 0
+    var relativeBase: Int = 0
     var outputs: [Int] = []
 
     var pending = false
@@ -28,36 +29,71 @@ struct IntCodeComputer {
     }
 
     enum Operation {
-        case add(immediateA: Bool, immediateB: Bool)
-        case multiply(immediateA: Bool, immediateB: Bool)
-        case input
-        case output(immediateA: Bool)
-        case jumpIfTrue(immediateA: Bool, immediateB: Bool)
-        case jumpIfFalse(immediateA: Bool, immediateB: Bool)
-        case lessThan(immediateA: Bool, immediateB: Bool)
-        case equals(immediateA: Bool, immediateB: Bool)
+        enum ParameterMode: Int {
+            case position = 0
+            case immediate = 1
+            case relative = 2
+
+            func address(for parameter: Int, with computer: IntCodeComputer) -> Int {
+                let address: Int
+                switch self {
+                case .position:
+                    address = parameter
+                case .relative:
+                    address = computer.relativeBase + parameter
+                case .immediate:
+                    fatalError("Unvalid address!")
+                }
+                assert(address >= 0)
+                return address
+            }
+
+            func value(for parameter: Int, with computer: IntCodeComputer) -> Int {
+                if self == .immediate {
+                    return parameter
+                }
+                return computer.memory[address(for: parameter, with: computer)] ?? 0
+            }
+
+            func set(value: Int, for parameter: Int, with computer: inout IntCodeComputer) {
+                computer.memory[address(for: parameter, with: computer)] = value
+            }
+        }
+
+        case add(modeA: ParameterMode, modeB: ParameterMode, modeC: ParameterMode)
+        case multiply(modeA: ParameterMode, modeB: ParameterMode, modeC: ParameterMode)
+        case input(modeA: ParameterMode)
+        case output(modeA: ParameterMode)
+        case jumpIfTrue(modeA: ParameterMode, modeB: ParameterMode)
+        case jumpIfFalse(modeA: ParameterMode, modeB: ParameterMode)
+        case lessThan(modeA: ParameterMode, modeB: ParameterMode, modeC: ParameterMode)
+        case equals(modeA: ParameterMode, modeB: ParameterMode, modeC: ParameterMode)
+        case adjustRelativeBase(modeA: ParameterMode)
         case exit
 
         static func from(opcode: Int) -> Operation {
-            let immediateA = (opcode / 100) % 2 == 1
-            let immediateB = (opcode / 1000) % 2 == 1
+            let modeA = ParameterMode(rawValue: (opcode / 100) % 10)!
+            let modeB = ParameterMode(rawValue: (opcode / 1000) % 10)!
+            let modeC = ParameterMode(rawValue: (opcode / 10000) % 10)!
             switch opcode % 100 {
             case 1:
-                return .add(immediateA: immediateA, immediateB: immediateB)
+                return .add(modeA: modeA, modeB: modeB, modeC: modeC)
             case 2:
-                return .multiply(immediateA: immediateA, immediateB: immediateB)
+                return .multiply(modeA: modeA, modeB: modeB, modeC: modeC)
             case 3:
-                return .input
+                return .input(modeA: modeA)
             case 4:
-                return .output(immediateA: immediateA)
+                return .output(modeA: modeA)
             case 5:
-                return jumpIfTrue(immediateA: immediateA, immediateB: immediateB)
+                return jumpIfTrue(modeA: modeA, modeB: modeB)
             case 6:
-                return jumpIfFalse(immediateA: immediateA, immediateB: immediateB)
+                return jumpIfFalse(modeA: modeA, modeB: modeB)
             case 7:
-                return lessThan(immediateA: immediateA, immediateB: immediateB)
+                return lessThan(modeA: modeA, modeB: modeB, modeC: modeC)
             case 8:
-                return equals(immediateA: immediateA, immediateB: immediateB)
+                return equals(modeA: modeA, modeB: modeB, modeC: modeC)
+            case 9:
+                return adjustRelativeBase(modeA: modeA)
             case 99:
                 return .exit
             default:
@@ -71,7 +107,7 @@ struct IntCodeComputer {
                 return 3
             case .jumpIfTrue, .jumpIfFalse:
                 return 2
-            case .input, .output:
+            case .input, .output, .adjustRelativeBase:
                 return 1
             case .exit:
                 fatalError("Calling 'numberOfParameters' on exit opcode")
@@ -80,50 +116,58 @@ struct IntCodeComputer {
 
         func perform(on computer: inout IntCodeComputer, with parameters: [Int]) {
             switch self {
-            case .add(immediateA: let immediateA, immediateB: let immediateB):
+            case .add(modeA: let modeA, modeB: let modeB, modeC: let modeC):
                 let a = parameters[0], b = parameters[1], c = parameters[2]
-                computer.memory[c] = (immediateA ? a : computer.memory[a]!) + (immediateB ? b : computer.memory[b]!)
+                let value = modeA.value(for: a, with: computer) + modeB.value(for: b, with: computer)
+                modeC.set(value: value, for: c, with: &computer)
                 computer.current += 4
-            case .multiply(immediateA: let immediateA, immediateB: let immediateB):
+            case .multiply(modeA: let modeA, modeB: let modeB, modeC: let modeC):
                 let a = parameters[0], b = parameters[1], c = parameters[2]
-                computer.memory[c] = (immediateA ? a : computer.memory[a]!) * (immediateB ? b : computer.memory[b]!)
+                let value = modeA.value(for: a, with: computer) * modeB.value(for: b, with: computer)
+                modeC.set(value: value, for: c, with: &computer)
                 computer.current += 4
-            case .input:
+            case .input(modeA: let modeA):
                 guard !computer.inputs.isEmpty else {
                     computer.pending = true
                     return
                 }
                 let a = parameters[0]
-                computer.memory[a] = computer.inputs.removeFirst()
+                modeA.set(value: computer.inputs.removeFirst(), for: a, with: &computer)
                 computer.current += 2
-            case .output(immediateA: let immediateA):
+            case .output(modeA: let modeA):
                 let a = parameters[0]
-                computer.outputs.append(immediateA ? a : computer.memory[a]!)
+                computer.outputs.append(modeA.value(for: a, with: computer))
                 computer.current += 2
-            case .jumpIfTrue(immediateA: let immediateA, immediateB: let immediateB):
+            case .jumpIfTrue(modeA: let modeA, modeB: let modeB):
                 let a = parameters[0], b = parameters[1]
-                if (immediateA ? a : computer.memory[a]!) != 0 {
-                    computer.current = immediateB ? b : computer.memory[b]!
+                if modeA.value(for: a, with: computer) != 0 {
+                    computer.current = modeB.value(for: b, with: computer)
                 }
                 else {
                     computer.current += 3
                 }
-            case .jumpIfFalse(immediateA: let immediateA, immediateB: let immediateB):
+            case .jumpIfFalse(modeA: let modeA, modeB: let modeB):
                 let a = parameters[0], b = parameters[1]
-                if (immediateA ? a : computer.memory[a]) == 0 {
-                    computer.current = immediateB ? b : computer.memory[b]!
+                if modeA.value(for: a, with: computer) == 0 {
+                    computer.current = modeB.value(for: b, with: computer)
                 }
                 else {
                     computer.current += 3
                 }
-            case .lessThan(immediateA: let immediateA, immediateB: let immediateB):
+            case .lessThan(modeA: let modeA, modeB: let modeB, modeC: let modeC):
                 let a = parameters[0], b = parameters[1], c = parameters[2]
-                computer.memory[c] = (immediateA ? a : computer.memory[a]!) < (immediateB ? b : computer.memory[b]!) ? 1 : 0
+                let value = modeA.value(for: a, with: computer) < modeB.value(for: b, with: computer) ? 1 : 0
+                modeC.set(value: value, for: c, with: &computer)
                 computer.current += 4
-            case .equals(immediateA: let immediateA, immediateB: let immediateB):
+            case .equals(modeA: let modeA, modeB: let modeB, modeC: let modeC):
                 let a = parameters[0], b = parameters[1], c = parameters[2]
-                computer.memory[c] = (immediateA ? a : computer.memory[a]!) == (immediateB ? b : computer.memory[b]!) ? 1 : 0
+                let value = modeA.value(for: a, with: computer) == modeB.value(for: b, with: computer) ? 1 : 0
+                modeC.set(value: value, for: c, with: &computer)
                 computer.current += 4
+            case .adjustRelativeBase(modeA: let modeA):
+                let a = parameters[0]
+                computer.relativeBase += modeA.value(for: a, with: computer)
+                computer.current += 2
             case .exit:
                 fatalError("Calling 'perform' on exit opcode")
             }

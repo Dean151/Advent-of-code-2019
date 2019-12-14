@@ -37,5 +37,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **11** | 0,069s          | 1863       | BLULZJLZ   |
 | **12** | TBA             |            |            |
 | **13** | TBA             |            |            |
+| **14** | TBA             | 378929     |            |
+| **15** | TBA             |            |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

@@ -144,8 +144,8 @@ extension String: InputType {
 
 extension Array where Element == Int {
     static func parse(rawValue: String) -> [Int] {
-        let set = CharacterSet.whitespacesAndNewlines.union(.init(charactersIn: ","))
-        return rawValue.components(separatedBy: set).compactMap {
+        let set = CharacterSet.alphanumerics.union(.init(charactersIn: "-"))
+        return rawValue.components(separatedBy: set.inverted).compactMap {
             return Int($0)
         }
     }

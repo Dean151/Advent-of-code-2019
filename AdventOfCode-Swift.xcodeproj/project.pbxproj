@@ -8,7 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		710D9374238541B90050BD59 /* AdventOfCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9373238541B90050BD59 /* AdventOfCode.swift */; };
-		719A979723965C8F0010478B /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A979623965C8F0010478B /* Geometry.swift */; };
+		7184149023AD23CC00616C91 /* Vector3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7184148F23AD23CC00616C91 /* Vector3D.swift */; };
+		719A979723965C8F0010478B /* Vector2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A979623965C8F0010478B /* Vector2D.swift */; };
 		71EEF0F42398E67200F89F48 /* IntCodeComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */; };
 		E981328B23849CBB0004E844 /* Day01.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328A23849CBA0004E844 /* Day01.swift */; };
 		E981328E23849CC40004E844 /* Day02.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328C23849CC40004E844 /* Day02.swift */; };
@@ -52,7 +53,8 @@
 
 /* Begin PBXFileReference section */
 		710D9373238541B90050BD59 /* AdventOfCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventOfCode.swift; sourceTree = "<group>"; };
-		719A979623965C8F0010478B /* Geometry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		7184148F23AD23CC00616C91 /* Vector3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector3D.swift; sourceTree = "<group>"; };
+		719A979623965C8F0010478B /* Vector2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector2D.swift; sourceTree = "<group>"; };
 		71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntCodeComputer.swift; sourceTree = "<group>"; };
 		71F4D8A0238FDAC500E27D74 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71F4D8A1238FDACB00E27D74 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -124,8 +126,9 @@
 		719A979523965C7E0010478B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				719A979623965C8F0010478B /* Geometry.swift */,
 				71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */,
+				719A979623965C8F0010478B /* Vector2D.swift */,
+				7184148F23AD23CC00616C91 /* Vector3D.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -475,8 +478,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E981328B23849CBB0004E844 /* Day01.swift in Sources */,
-				719A979723965C8F0010478B /* Geometry.swift in Sources */,
+				719A979723965C8F0010478B /* Vector2D.swift in Sources */,
 				E981328E23849CC40004E844 /* Day02.swift in Sources */,
+				7184149023AD23CC00616C91 /* Vector3D.swift in Sources */,
 				E981329123849CCB0004E844 /* Day03.swift in Sources */,
 				E981329423849DA60004E844 /* Day04.swift in Sources */,
 				E981329723849DB10004E844 /* Day05.swift in Sources */,

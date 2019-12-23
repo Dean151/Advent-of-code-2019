@@ -36,8 +36,16 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **10** | 0,09s           | 253        | 815        |
 | **11** | 0,069s          | 1863       | BLULZJLZ   |
 | **12** | 1,237s          | 9958       | 318382803780324 |
-| **13** | TBA             |            |            |
+| **13** | 0,548s          | 284        | 13581      |
 | **14** | TBA             | 378929     |            |
 | **15** | TBA             |            |            |
+| **16** | TBA             |            |            |
+| **17** | TBA             |            |            |
+| **18** | TBA             |            |            |
+| **19** | TBA             |            |            |
+| **20** | TBA             |            |            |
+| **21** | TBA             |            |            |
+| **22** | TBA             |            |            |
+| **23** | TBA             |            |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

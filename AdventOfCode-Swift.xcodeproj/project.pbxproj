@@ -10,6 +10,7 @@
 		710D9374238541B90050BD59 /* AdventOfCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710D9373238541B90050BD59 /* AdventOfCode.swift */; };
 		7184149023AD23CC00616C91 /* Vector3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7184148F23AD23CC00616C91 /* Vector3D.swift */; };
 		719A979723965C8F0010478B /* Vector2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719A979623965C8F0010478B /* Vector2D.swift */; };
+		71C9F8B423B0F55D007ECCD1 /* Maths.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71C9F8B323B0F55D007ECCD1 /* Maths.swift */; };
 		71EEF0F42398E67200F89F48 /* IntCodeComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */; };
 		E981328B23849CBB0004E844 /* Day01.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328A23849CBA0004E844 /* Day01.swift */; };
 		E981328E23849CC40004E844 /* Day02.swift in Sources */ = {isa = PBXBuildFile; fileRef = E981328C23849CC40004E844 /* Day02.swift */; };
@@ -55,6 +56,7 @@
 		710D9373238541B90050BD59 /* AdventOfCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventOfCode.swift; sourceTree = "<group>"; };
 		7184148F23AD23CC00616C91 /* Vector3D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector3D.swift; sourceTree = "<group>"; };
 		719A979623965C8F0010478B /* Vector2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vector2D.swift; sourceTree = "<group>"; };
+		71C9F8B323B0F55D007ECCD1 /* Maths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Maths.swift; sourceTree = "<group>"; };
 		71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntCodeComputer.swift; sourceTree = "<group>"; };
 		71F4D8A0238FDAC500E27D74 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		71F4D8A1238FDACB00E27D74 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				71EEF0F32398E67200F89F48 /* IntCodeComputer.swift */,
 				719A979623965C8F0010478B /* Vector2D.swift */,
 				7184148F23AD23CC00616C91 /* Vector3D.swift */,
+				71C9F8B323B0F55D007ECCD1 /* Maths.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -495,6 +498,7 @@
 				E98132AF23849E1B0004E844 /* Day13.swift in Sources */,
 				E98132B823849E590004E844 /* Day15.swift in Sources */,
 				E98132B223849E2A0004E844 /* Day14.swift in Sources */,
+				71C9F8B423B0F55D007ECCD1 /* Maths.swift in Sources */,
 				E98132B523849E530004E844 /* Day16.swift in Sources */,
 				E98132C123849E820004E844 /* Day17.swift in Sources */,
 				E98132BE23849E7B0004E844 /* Day18.swift in Sources */,

@@ -12,7 +12,7 @@ struct Day12: Day {
         print("Energy for System for Day 12-1 is \(system.forwarded(by: 1000).energy)")
 
         // Part 2 requirement
-        assert(System(input: "<x=-8, y=-10, z=0>\n<x=5, y=5, z=10>\n<x=2, y=-7, z=3>\n<x=9, y=-8, z=-3>").numberOfStepsBeforeRepeats == 4686774924)
+        assert(System(input: "<x=-8, y=-10, z=0>\n<x=5, y=5, z=10>\n<x=2, y=-7, z=3>\n<x=9, y=-8, z=-3>").numberOfStepsBeforeRepeats == 4_686_774_924)
 
         print("Number of steps before seeing a previous state for Day 12-2 is \(system.numberOfStepsBeforeRepeats)")
     }
@@ -109,9 +109,54 @@ struct Day12: Day {
             return moons.reduce(0) { $0 + $1.energy }
         }
 
+        func state(for coordinate: String) -> ([Int], [Int]) {
+            return (moons.map {
+                switch coordinate {
+                case "x":
+                    return $0.position.x
+                case "y":
+                    return $0.position.y
+                case "z":
+                    return $0.position.z
+                default:
+                    fatalError("Welcome ... in the twilight zone")
+                }
+            }, moons.map {
+                switch coordinate {
+                case "x":
+                    return $0.velocity.x
+                case "y":
+                    return $0.velocity.y
+                case "z":
+                    return $0.velocity.z
+                default:
+                    fatalError("Welcome ... in the twilight zone")
+                }
+            })
+        }
+
         var numberOfStepsBeforeRepeats: Int {
-            // TODO!
-            return 0
+            func checkIfRepeated(target: System, current: System, coordinate: String) -> Bool {
+                return target.state(for: coordinate) == current.state(for: coordinate)
+            }
+
+            var repeatX: Int?, repeatY: Int?, repeatZ: Int?
+            var system = self
+            var count = 1
+            while repeatX == nil || repeatY == nil || repeatZ == nil {
+                system.forwardOnce()
+                if repeatX == nil && checkIfRepeated(target: self, current: system, coordinate: "x") {
+                    repeatX = count
+                }
+                if repeatY == nil && checkIfRepeated(target: self, current: system, coordinate: "y") {
+                    repeatY = count
+                }
+                if repeatZ == nil && checkIfRepeated(target: self, current: system, coordinate: "z") {
+                    repeatZ = count
+                }
+                count += 1
+            }
+            return leastCommonMultiple([repeatX!, repeatY!, repeatZ!])
         }
 
         var description: String {

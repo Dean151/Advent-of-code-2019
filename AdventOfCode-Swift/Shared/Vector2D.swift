@@ -75,3 +75,27 @@ extension Vector2D {
         self = self.moved(direction)
     }
 }
+
+extension Dictionary where Key == Vector2D, Value: CustomStringConvertible {
+    var bounds: (minX: Int, maxX: Int, minY: Int, maxY: Int) {
+        precondition(!isEmpty)
+        var minX = Int.max, minY = Int.max, maxX = Int.min, maxY = Int.min
+        for pos in keys {
+            minX = Swift.min(pos.x, minX)
+            maxX = Swift.max(pos.x, maxX)
+            minY = Swift.min(pos.y, minY)
+            maxY = Swift.max(pos.y, maxY)
+        }
+        return (minX, maxX, minY, maxY)
+    }
+
+    func print(placeholder: String = " ") {
+        let (minX, maxX, minY, maxY) = self.bounds
+        for y in minY...maxY {
+            for x in minX...maxX {
+                Swift.print(self[Vector2D(x: x, y: y)]?.description ?? placeholder, terminator: "")
+            }
+            Swift.print("") // Back to line
+        }
+    }
+}

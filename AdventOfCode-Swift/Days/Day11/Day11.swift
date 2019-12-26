@@ -46,8 +46,12 @@ struct Day11: Day {
     }
 
     struct Grid {
-        enum Color: Int {
+        enum Color: Int, CustomStringConvertible {
             case black = 0, white
+
+            var description: String {
+                return self == .white ? "#" : " "
+            }
         }
 
         var color: Color
@@ -61,30 +65,8 @@ struct Day11: Day {
             return panels.count
         }
 
-        var bounds: (minX: Int, maxX: Int, minY: Int, maxY: Int) {
-            if panels.isEmpty {
-                fatalError("No bounds to find!")
-            }
-            var minX = Int.max, minY = Int.max, maxX = Int.min, maxY = Int.min
-            for pos in panels.keys {
-                minX = min(pos.x, minX)
-                maxX = max(pos.x, maxX)
-                minY = min(pos.y, minY)
-                maxY = max(pos.y, maxY)
-            }
-            return (minX, maxX, minY, maxY)
-        }
-
         func print() {
-            let (minX, maxX, minY, maxY) = self.bounds
-            for y in minY...maxY {
-                for x in minX...maxX {
-                    Swift.print(currentColor(at: Vector2D(x: x, y: y)) == .white ? "#" : ".", terminator: "")
-                }
-                Swift.print("") // Back to line
-            }
+            panels.print(placeholder: color.description)
         }
     }
 }
-
-// 1298 Too low

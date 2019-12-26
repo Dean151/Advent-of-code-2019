@@ -10,8 +10,23 @@ struct Day13: Day {
     }
 
     struct Arcade {
-        enum Tile: Int {
+        enum Tile: Int, CustomStringConvertible {
             case empty = 0, wall, block, paddle, ball
+
+            var description: String {
+                switch self {
+                case .empty:
+                    return " "
+                case .wall:
+                    return "#"
+                case .block:
+                    return "="
+                case .paddle:
+                    return "_"
+                case .ball:
+                    return "*"
+                }
+            }
         }
 
         let instructions: [Int]

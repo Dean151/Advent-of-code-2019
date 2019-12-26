@@ -53,8 +53,6 @@ struct Day10: Day {
                     switch char {
                     case "#":
                         asteroids.insert(pos)
-                    case ".":
-                        break
                     default:
                         break
                     }

@@ -39,7 +39,7 @@ extension Vector2D {
     enum Turn {
         case left, right
     }
-    enum Direction {
+    enum Direction: CaseIterable {
         case up, left, right, down
 
         func turned(_ turn: Turn) -> Direction {
@@ -73,6 +73,10 @@ extension Vector2D {
     }
     mutating func move(_ direction: Direction) {
         self = self.moved(direction)
+    }
+
+    var neighbours: [Vector2D] {
+        return Direction.allCases.map { moved($0) }
     }
 }
 

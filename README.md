@@ -38,7 +38,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **12** | 1,237s          | 9958       | 318382803780324 |
 | **13** | 0,548s          | 284        | 13581      |
 | **14** | TBA             | 378929     |            |
-| **15** | TBA             |            |            |
+| **15** | 0,173s          | 254        | 268        |
 | **16** | TBA             |            |            |
 | **17** | TBA             |            |            |
 | **18** | TBA             |            |            |
@@ -47,5 +47,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **21** | TBA             |            |            |
 | **22** | TBA             |            |            |
 | **23** | TBA             |            |            |
+| **24** | TBA             |            |            |
+| **25** | TBA             |            |            |
 
 \* : Best elapsed time of the complete solution using my MacBook Pro 13in mid 2013 in "Release" mode

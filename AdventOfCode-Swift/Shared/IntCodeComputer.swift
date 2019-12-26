@@ -193,6 +193,12 @@ struct IntCodeComputer {
         }
     }
 
+    func withInput(_ inputs: Int...) -> IntCodeComputer {
+        var computer = self
+        computer.inputs = inputs
+        return computer
+    }
+
     func runned() -> IntCodeComputer {
         var computer = self
         computer.run()

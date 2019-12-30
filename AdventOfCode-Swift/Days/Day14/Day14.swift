@@ -170,7 +170,11 @@ struct Day14: Day {
             let amount = Int((Double(left["ORE"] ?? 0) / Double(self.orePerFuel())).rounded(.down))
             precondition(targetReaction.produce(with: reactions, productsLeft: &left, times: amount))
             for times in [10_000_000, 1_000_000, 100_000, 10_000, 1_000, 100, 10, 1] {
-                while targetReaction.produce(with: reactions, productsLeft: &left, times: times) {}
+                var save = left
+                while targetReaction.produce(with: reactions, productsLeft: &left, times: times) {
+                    save = left
+                }
+                left = save
             }
         }
 

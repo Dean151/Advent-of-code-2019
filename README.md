@@ -37,7 +37,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **11** | 0,069s          | 1863       | BLULZJLZ   |
 | **12** | 1,237s          | 9958       | 318382803780324 |
 | **13** | 0,548s          | 284        | 13581      |
-| **14** | TBA             | 378929     |            |
+| **14** | 0,503s          | 378929     | 3445249    |
 | **15** | 0,173s          | 254        | 268        |
 | **16** | TBA             |            |            |
 | **17** | TBA             |            |            |

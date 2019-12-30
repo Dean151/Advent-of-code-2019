@@ -39,7 +39,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **13** | 0,548s          | 284        | 13581      |
 | **14** | 0,503s          | 378929     | 3445249    |
 | **15** | 0,173s          | 254        | 268        |
-| **16** | TBA             |            |            |
+| **16** | *8,834s*        | 88323090   | 50077964   |
 | **17** | TBA             |            |            |
 | **18** | TBA             |            |            |
 | **19** | TBA             |            |            |

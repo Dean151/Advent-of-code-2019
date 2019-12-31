@@ -17,10 +17,10 @@ struct Day18: Day {
     }
 
     struct Maze {
-        enum Key: String {
-            case a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
-        }
         enum Tile: CustomStringConvertible {
+            enum Key: String {
+                case a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z
+            }
             case empty, wall
             case key(key: Key)
             case door(key: Key)
@@ -74,9 +74,9 @@ struct Day18: Day {
             }
         }
 
-        var position: Vector2D
-        var tiles: [Vector2D: Tile]
-        var targetNumber: Int
+        private var tiles: [Vector2D: Tile]
+        private var position: Vector2D
+        private var targetNumber: Int
 
         private var _solution: (numberOfSteps: Int, order: String) = (0, "")
         var isSolved: Bool {
@@ -109,40 +109,64 @@ struct Day18: Day {
             self.targetNumber = tiles.filter({ $0.value.isKey }).count
         }
 
-        func findFetchableKeys() -> [(key: Key, position: Vector2D, distance: Int)] {
-            // TODO: A*
-            return []
+        func printTiles() {
+            tiles.print()
         }
 
-        func solve(solution: inout Maze?) {
-            // Some recursive A* algorithm will be usefull here.
-            // It's gonna be interesting ^^
-            for (key, position, distance) in findFetchableKeys() {
-                var maze = self
-                // Update partial solution
-                maze._solution.numberOfSteps += distance
-                if solution?._solution.numberOfSteps ?? .max < maze._solution.numberOfSteps {
-                    // We are already above an existing solution, drop this one
-                    continue
+        func findFetchableKeys() -> [Tile.Key: (position: Vector2D, distance: Int)] {
+            var keys: [Tile.Key: (position: Vector2D, distance: Int)] = [:]
+            var visited: [Vector2D: Int] = [:]
+            var toVisit: [Vector2D: Int] = [position: 0]
+            while let (position, distance) = toVisit.popFirst() {
+                for neighbour in position.neighbours {
+                    switch tiles[neighbour] {
+                    case .key(key: let key):
+                        if keys[key]?.distance ?? .max > distance + 1 {
+                            keys[key] = (neighbour, distance + 1)
+                        }
+                    case .wall, .door:
+                        continue
+                    default:
+                        if visited[neighbour] ?? .max > distance + 1 && toVisit[neighbour] ?? .max > distance + 1 {
+                            toVisit[neighbour] = distance + 1
+                        }
+                    }
                 }
-                maze._solution.order.append(key.rawValue)
-                // Update position
-                maze.position = position
-                // Update tiles
-                for position in maze.tiles.filter({ $0.value.key != key }).keys {
-                    maze.tiles.updateValue(.empty, forKey: position)
-                }
-                if maze.isSolved && maze._solution.numberOfSteps < solution?._solution.numberOfSteps ?? .max {
-                    solution = maze
-                } else {
-                    maze.solve(solution: &solution)
+                if visited[position] ?? .max > distance {
+                    visited[position] = distance
                 }
             }
+            return keys
         }
 
         func solved() -> Maze {
+            func solve(maze: Maze, solution: inout Maze?) {
+                for (key, (position, distance)) in maze.findFetchableKeys() {
+                    var maze = maze
+                    // Update partial solution
+                    maze._solution.numberOfSteps += distance
+                    if solution?._solution.numberOfSteps ?? .max < maze._solution.numberOfSteps {
+                        // We are already above an existing solution, drop this one
+                        continue
+                    }
+                    maze._solution.order.append(key.rawValue)
+                    // Update position
+                    maze.position = position
+                    // Update tiles
+                    for position in maze.tiles.filter({ $0.value.key == key }).keys {
+                        maze.tiles.updateValue(.empty, forKey: position)
+                    }
+                    if maze.isSolved && maze._solution.numberOfSteps < solution?._solution.numberOfSteps ?? .max {
+                        solution = maze
+                        print(maze.solution.numberOfSteps)
+                    } else {
+                        solve(maze: maze, solution: &solution)
+                    }
+                }
+            }
+
             var solution: Maze?
-            solve(solution: &solution)
+            solve(maze: self, solution: &solution)
             return solution!
         }
     }

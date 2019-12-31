@@ -114,13 +114,17 @@ struct Day18: Day {
             return []
         }
 
-        func solve(solved: inout [Maze]) {
+        func solve(solution: inout Maze?) {
             // Some recursive A* algorithm will be usefull here.
             // It's gonna be interesting ^^
             for (key, position, distance) in findFetchableKeys() {
                 var maze = self
                 // Update partial solution
                 maze._solution.numberOfSteps += distance
+                if solution?._solution.numberOfSteps ?? .max < maze._solution.numberOfSteps {
+                    // We are already above an existing solution, drop this one
+                    continue
+                }
                 maze._solution.order.append(key.rawValue)
                 // Update position
                 maze.position = position
@@ -128,21 +132,18 @@ struct Day18: Day {
                 for position in maze.tiles.filter({ $0.value.key != key }).keys {
                     maze.tiles.updateValue(.empty, forKey: position)
                 }
-                if maze.isSolved {
-                    solved.append(maze)
+                if maze.isSolved && maze._solution.numberOfSteps < solution?._solution.numberOfSteps ?? .max {
+                    solution = maze
                 } else {
-                    maze.solve(solved: &solved)
+                    maze.solve(solution: &solution)
                 }
             }
         }
 
         func solved() -> Maze {
-            var solved: [Maze] = []
-            solve(solved: &solved)
-            guard let minSolution = solved.min(by: { $0.solution.numberOfSteps < $1.solution.numberOfSteps }) else {
-                fatalError("Unsolvable maze")
-            }
-            return minSolution
+            var solution: Maze?
+            solve(solution: &solution)
+            return solution!
         }
     }
 }

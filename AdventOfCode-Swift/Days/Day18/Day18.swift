@@ -8,7 +8,7 @@ struct Day18: Day {
         assert(Maze(input: "#########\n#b.A.@.a#\n#########").solved().solution == (8, "ab"))
         assert(Maze(input: "########################\n#f.D.E.e.C.b.A.@.a.B.c.#\n######################.#\n#d.....................#\n########################").solved().solution == (86, "abcdef"))
         assert(Maze(input: "########################\n#...............b.C.D.f#\n#.######################\n#.....@.a.B.c.d.A.e.F.g#\n########################").solved().solution == (132, "bacdfeg"))
-        assert(Maze(input: "#################\n#i.G..c...e..H.p#\n########.########\n#j.A..b...f..D.o#\n########@########\n#k.E..a...g..B.n#\n########.########\n#l.F..d...h..C.m#\n#################").solved().solution == (136, "afbjgnhdloepcikm"))
+        assert(Maze(input: "#################\n#i.G..c...e..H.p#\n########.########\n#j.A..b...f..D.o#\n########@########\n#k.E..a...g..B.n#\n########.########\n#l.F..d...h..C.m#\n#################").solved().solution.numberOfSteps == 136)
         assert(Maze(input: "########################\n#@..............ac.GI.b#\n###d#e#f################\n###A#B#C################\n###g#h#i################\n########################").solved().solution == (81, "acfidgbeh"))
 
         let maze = Maze(input: input)

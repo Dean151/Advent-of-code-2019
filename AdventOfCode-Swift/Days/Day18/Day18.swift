@@ -14,6 +14,7 @@ struct Day18: Day {
         let maze = Maze(input: input)
         let solution = maze.solved().solution
         print("Shortest path to collect all the key for Day 18-1 is \(solution.numberOfSteps) steps long")
+        // 3242 Too high
     }
 
     struct Maze {
@@ -141,7 +142,9 @@ struct Day18: Day {
 
         func solved() -> Maze {
             func solve(maze: Maze, solution: inout Maze?) {
-                for (key, (position, distance)) in maze.findFetchableKeys() {
+                var keys = maze.findFetchableKeys()
+                while let (key, (position, distance)) = keys.min(by: { $0.value.distance < $1.value.distance }) {
+                    keys.removeValue(forKey: key)
                     var maze = maze
                     // Update partial solution
                     maze._solution.numberOfSteps += distance
@@ -158,7 +161,7 @@ struct Day18: Day {
                     }
                     if maze.isSolved && maze._solution.numberOfSteps < solution?._solution.numberOfSteps ?? .max {
                         solution = maze
-                        print(maze.solution.numberOfSteps)
+                        print(maze.solution)
                     } else {
                         solve(maze: maze, solution: &solution)
                     }

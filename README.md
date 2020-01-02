@@ -43,7 +43,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **17** | 0,103s          | 5056       | 942367     |
 | **18** | TBA             |            |            |
 | **19** | *20,613s*       | 138        | 13530764   |
-| **20** | TBA             |            |            |
+| **20** | 0,817s          | 602        | 6986       |
 | **21** | TBA             |            |            |
 | **22** | TBA             |            |            |
 | **23** | TBA             |            |            |

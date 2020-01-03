@@ -194,6 +194,10 @@ struct IntCodeComputer {
     }
 
     func withInput(_ inputs: Int...) -> IntCodeComputer {
+        return withInput(inputs)
+    }
+
+    func withInput(_ inputs: [Int]) -> IntCodeComputer {
         var computer = self
         computer.inputs = inputs
         return computer

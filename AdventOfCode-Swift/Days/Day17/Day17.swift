@@ -17,7 +17,7 @@ struct Day17: Day {
         let b = "R,12,L,6,R,6,R,8,R,6"
         let c = "L,8,R,8,R,6,R,12"
         precondition(a.count <= 20 && b.count <= 20 && c.count <= 20)
-        let asciiInput = [function, a, b, c, "n", ""].joined(separator: "\n").unicodeScalars.map {
+        let asciiInput = [function, a, b, c, "n\n"].joined(separator: "\n").unicodeScalars.map {
             Int($0.value)
         }
         var runningComputer = IntCodeComputer(instructions: .parse(rawValue: input))

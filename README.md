@@ -45,7 +45,7 @@ Some special attention will be addressed regarding performances, I'll try to sol
 | **19** | *20,613s*       | 138        | 13530764   |
 | **20** | 0,817s          | 602        | 6986       |
 | **21** | 0,338s          | 19360288   | 1143814750 |
-| **22** | TBA             |            |            |
+| **22** | TBA             | 7744       |            |
 | **23** | TBA             |            |            |
 | **24** | TBA             |            |            |
 | **25** | TBA             |            |            |
